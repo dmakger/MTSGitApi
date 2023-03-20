@@ -22,6 +22,7 @@ def create_user(sender, **kwargs):
 
 # ===={ Чат }====
 class Chat(models.Model):
+    image = models.ImageField(blank=True, null=True, default=None)
     title = models.CharField(max_length=64)
     description = models.TextField(max_length=255, null=True, default=None, blank=True)
     count_user = models.IntegerField(default=0)
