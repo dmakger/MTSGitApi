@@ -49,7 +49,7 @@ class ProfileToChat(models.Model):
 
 @receiver(post_save, sender=ProfileToChat)
 def add_profile_to_chat(sender, instance, **kwargs):
-    if kwargs['origin']:
+    if kwargs['created']:
         chat = kwargs['instance'].chat
         chat.count_user += 1
         chat.save()
@@ -57,7 +57,7 @@ def add_profile_to_chat(sender, instance, **kwargs):
 
 @receiver(post_delete, sender=ProfileToChat)
 def pop_profile_to_chat(sender, **kwargs):
-    if kwargs['origin']:
+    if kwargs['created']:
         chat = kwargs['instance'].chat
         chat.count_user -= 1
         chat.save()
