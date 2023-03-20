@@ -3,6 +3,23 @@ from rest_framework import serializers
 from .models import Message, Profile
 
 
+class DetailProfileSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField()
+    email = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Profile
+        fields = ("id", "username", "email", "image")
+
+    @staticmethod
+    def get_username(model):
+        return model.user.username
+
+    @staticmethod
+    def get_email(model):
+        return model.user.email
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
 
@@ -29,3 +46,17 @@ class MessageSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return self.Meta.model.objects.create(**validated_data, **self.context)
 
+
+class ChatSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Message
+        fields = ("id", "user", "text")
+
+    @staticmethod
+    def get_user(model):
+        return ProfileSerializer(model.profile_to_chat.profile).data
+
+    def create(self, validated_data):
+        return self.Meta.model.objects.create(**validated_data, **self.context)
