@@ -9,4 +9,5 @@ urlpatterns = [
     path("", include(router.urls)),
 
     path("chat/<int:pk>/", MessageView.as_view({'get': 'get_last_messages'})),
+    path("chat/<int:pk>/message/send/", MessageView.as_view({'post': 'send_message'})),
 ]

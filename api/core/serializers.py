@@ -25,3 +25,7 @@ class MessageSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_user(model):
         return ProfileSerializer(model.profile_to_chat.profile).data
+
+    def create(self, validated_data):
+        return self.Meta.model.objects.create(**validated_data, **self.context)
+
